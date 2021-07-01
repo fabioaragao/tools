@@ -15,8 +15,8 @@
           - htop
           - curl
           - wget
-          - ncdu
-          - tree
+          #- ncdu
+          #- tree
           - apt-transport-https
           - ca-certificates
           - gnupg
@@ -26,12 +26,12 @@
           - bash-completion
           - gnupg-agent
           - zsh
-          - flameshot
+          #- flameshot
           - fonts-hack
           - tilix
           - virtualbox
           - mlocate
-          - krita
+          #- krita
           - jq
           - mtr
 
@@ -98,48 +98,48 @@
           remote_src: yes
 
     - block:
-      - name: Installing Terraform 0.12.30
+      - name: Installing Terraform 1.0.1
         become: true
         unarchive:
-          src: 'https://releases.hashicorp.com/terraform/0.12.30/terraform_0.12.30_linux_amd64.zip'
+          src: 'https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1_linux_amd64.zip'
           dest: /usr/local/bin
           remote_src: yes
-      - name: Renaming terraform12 binary
+      - name: Renaming terraform binary
         become: true
-        command: mv /usr/local/bin/terraform /usr/local/bin/terraform12
-      - name: Installing Terraform 0.13.6
-        become: true
-        unarchive:
-          src: 'https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_linux_amd64.zip'
-          dest: /usr/local/bin
-          remote_src: yes
-      - name: Renaming terraform13 binary
-        become: true
-        command: mv /usr/local/bin/terraform /usr/local/bin/terraform13
-      - name: Installing Terraform 0.14.10
-        become: true
-        unarchive:
-          src: 'https://releases.hashicorp.com/terraform/0.14.10/terraform_0.14.10_linux_amd64.zip'
-          dest: /usr/local/bin
-          remote_src: yes
-      - name: Renaming terraform14 binary
-        become: true
-        command: mv /usr/local/bin/terraform /usr/local/bin/terraform14
-      - name: Installing Terraform 0.15.0
-        become: true
-        unarchive:
-          src: 'https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip'
-          dest: /usr/local/bin
-          remote_src: yes
-      - name: Renaming terraform15 binary
-        become: true
-        command: mv /usr/local/bin/terraform /usr/local/bin/terraform15
+        command: mv /usr/local/bin/terraform /usr/local/bin/terraform1
+      #- name: Installing Terraform 0.13.6
+      #  become: true
+      #  unarchive:
+      #    src: 'https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_linux_amd64.zip'
+      #    dest: /usr/local/bin
+      #    remote_src: yes
+      #- name: Renaming terraform13 binary
+      #  become: true
+      #  command: mv /usr/local/bin/terraform /usr/local/bin/terraform13
+      #- name: Installing Terraform 0.14.10
+      #  become: true
+      #  unarchive:
+      #    src: 'https://releases.hashicorp.com/terraform/0.14.10/terraform_0.14.10_linux_amd64.zip'
+      #    dest: /usr/local/bin
+      #    remote_src: yes
+      #- name: Renaming terraform14 binary
+      #  become: true
+      #  command: mv /usr/local/bin/terraform /usr/local/bin/terraform14
+      #- name: Installing Terraform 0.15.0
+      #  become: true
+      #  unarchive:
+      #    src: 'https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_linux_amd64.zip'
+      #    dest: /usr/local/bin
+      #    remote_src: yes
+      #- name: Renaming terraform15 binary
+      #  become: true
+      #  command: mv /usr/local/bin/terraform /usr/local/bin/terraform15
 
     - block:
-      - name: Installing Vault 1.7.1
+      - name: Installing Vault 1.7.3
         become: true
         unarchive:
-          src: 'https://releases.hashicorp.com/vault/1.7.1/vault_1.7.1_linux_amd64.zip'
+          src: 'https://releases.hashicorp.com/vault/1.7.3/vault_1.7.3_linux_amd64.zip'
           dest: /usr/local/bin
           remote_src: yes
 
@@ -206,6 +206,8 @@
           - gruntfuggly.todo-tree
           - njpwerner.autodocstring
           - eamodio.gitlens
+          - vscode-icons-team.vscode-icons
+          - ms-kubernetes-tools.vscode-kubernetes-tools
 
     - block: 
       - name: Install Docker Key
@@ -232,7 +234,7 @@
       - name: Install Docker-Compose
         become: true
         get_url:
-          url: 'https://github.com/docker/compose/releases/download/1.26.2/docker-compose-Linux-x86_64'
+          url: 'https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64'
           dest: '/usr/local/bin/docker-compose'
           mode: 755
           remote_src: yes
@@ -245,7 +247,7 @@
       - name: Install Docker-Compose Bash Completion
         become: true
         get_url:
-          url: 'https://raw.githubusercontent.com/docker/compose/1.26.2/contrib/completion/bash/docker-compose'
+          url: 'https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/bash/docker-compose'
           dest: '/etc/bash_completion.d/docker-compose'
           remote_src: yes
       - name: Install Docker-Compose and Docker Machine Zsh Completion
@@ -294,6 +296,11 @@
         become: true
         apt:
           name: golang-go
+
+    - name: Installing K3D
+      shell:
+        cmd: 'curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash'
+        warn: false      
           
 # OPTIONAL:
 #  - PEEK - Lightweight Screen Recorder that can export as GIF
@@ -301,25 +308,25 @@
 #  - Brave Browser - Secure web browser
 #  - Ulauncher - Application Launcher
 
-    - block:
-      - name: Adding Peek Repository
-        become: true
-        apt_repository:
-          repo: 'ppa:peek-developers/stable'
-      - name: Install Peek
-        become: true
-        apt:
-          name: peek
+    #- block:
+    #  - name: Adding Peek Repository
+    #    become: true
+    #    apt_repository:
+    #      repo: 'ppa:peek-developers/stable'
+    #  - name: Install Peek
+    #    become: true
+    #    apt:
+    #      name: peek
 
-    - block:
-      - name: Install obsproject Ubuntu Repo
-        become: true
-        apt_repository:
-          repo: 'ppa:obsproject/obs-studio'
-      - name: Install obs Studio
-        become: true
-        apt:
-          name: obs-studio
+    #- block:
+    #  - name: Install obsproject Ubuntu Repo
+    #    become: true
+    #    apt_repository:
+    #      repo: 'ppa:obsproject/obs-studio'
+    #  - name: Install obs Studio
+    #    become: true
+    #    apt:
+    #      name: obs-studio
 
     - block: 
       - name: Install Brave Key
